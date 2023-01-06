@@ -1,26 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./BasicForm.css";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import Modal from "./Modal";
 import DropDownMenu from "./DropDownMenu";
 import { useFormik } from "formik";
 import { signUpSchema } from "../schemas/index";
-
+import plusIcon from "../plus_icon.png";
 const initialValues = {
   organization: "",
   program: "",
   pattern: "",
-  epics: "",
-  capability: "",
-  platform: "",
-  scontainer: "",
+  epics: [],
+  capability: [],
+  platform: [],
+  scontainer: [],
 };
 
 const BasicForm = () => {
+  const [epics, setEpics] = useState([]);
+  const [capability, setCapability] = useState([]);
+  const [platform, setPlatform] = useState([]);
+  const [scontainer, setScontainer] = useState([]);
   const [disable, setDisable] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [id, setId] = useState("");
+
+  const openModal = (e) => {
+    e.preventDefault();
+    setIsOpen(true);
+    let parentDiv = e.target.parentNode;
+    setId(parentDiv.id);
+  };
 
   const { values, errors, handleChange, handleSubmit } = useFormik({
     initialValues: initialValues,
     validationSchema: signUpSchema,
     onSubmit: (values) => {
+      values.epics = epics;
+      values.capability = capability;
+      values.platform = platform;
+      values.scontainer = scontainer;
       console.log(values);
     },
   });
@@ -33,9 +52,31 @@ const BasicForm = () => {
     }
   };
 
+  const saveHandler = (id, value) => {
+    if (id === "epicsId") {
+      setEpics((prev) => [...prev, value]);
+    } else if (id === "capabilityId") {
+      setCapability((prev) => [...prev, value]);
+    } else if (id === "platformId") {
+      setPlatform((prev) => [...prev, value]);
+    } else if (id === "scontainerId") {
+      setScontainer((prev) => [...prev, value]);
+    }
+  };
+
   return (
     <div className="formContainer">
       <form className="flexColumn" onSubmit={handleSubmit}>
+        {isOpen ? (
+          <Modal
+            id={id}
+            heading={"Add an option"}
+            onSave={saveHandler}
+            setIsOpen={setIsOpen}
+          />
+        ) : (
+          ""
+        )}
         <div className="form">
           <div className="formGroup">
             <label htmlFor="organization" className="formLabel">
@@ -87,31 +128,51 @@ const BasicForm = () => {
               ))}
             </select>
           </div>
-          <div className="formGroup">
+          <div id="epicsId" className="formGroup">
             <DropDownMenu
               disable={disable}
               label="Epics ID(s)"
-              onChange={(e) => {
-                handleChange();
-              }}
               value={values.epics}
               name="epics"
-              items={["please add the Epics ID(s)"]}
+              items={epics}
+              onChange={handleChange}
+              optionItem="please add the Epics ID(s)"
             />
+            {!disable ? (
+              <img
+                src={plusIcon}
+                onClick={openModal}
+                alt="plus"
+                className="plusCircle"
+              />
+            ) : (
+              ""
+            )}
           </div>
-          <div className="formGroup">
+          <div id="capabilityId" className="formGroup">
             <DropDownMenu
               disable={disable}
               onChange={(e) => {
                 handleChange();
               }}
+              items={capability}
               value={values.capability}
               name="capability"
               label="Add Capabilites"
-              items={["please add the Capabilities"]}
+              optionItem="please add the Capabilities"
             />
+            {!disable ? (
+              <img
+                src={plusIcon}
+                onClick={openModal}
+                alt="plus"
+                className="plusCircle"
+              />
+            ) : (
+              ""
+            )}
           </div>
-          <div className="formGroup">
+          <div id="platformId" className="formGroup">
             <DropDownMenu
               disable={disable}
               onChange={(e) => {
@@ -119,19 +180,38 @@ const BasicForm = () => {
               }}
               value={values.platform}
               name="platform"
+              items={platform}
               label="Add Platform(s)"
-              items={["please add the Platform(s)"]}
+              optionItem="please add the Platform(s)"
             />
+            {!disable ? (
+              <img
+                src={plusIcon}
+                onClick={openModal}
+                alt="plus"
+                className="plusCircle"
+              />
+            ) : (
+              ""
+            )}
           </div>
-          <div className="formGroup">
+          <div id={"scontainerId"} className="formGroup">
             <DropDownMenu
               name="scontainer"
               onChange={(e) => {
                 handleChange();
               }}
+              items={scontainer}
               value={values.scontainer}
               label="Add S-container(s)"
-              items={["please add the S-container(s)"]}
+              optionItem="please add the S-container(s)"
+            />
+
+            <img
+              src={plusIcon}
+              onClick={openModal}
+              alt="plus"
+              className="plusCircle"
             />
           </div>
         </div>
