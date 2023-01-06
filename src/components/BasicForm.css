@@ -42,10 +42,12 @@ color: #777;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    cursor: pointer;
 }
-.formOption{
+option{
 padding: 5px 15px;
 margin-bottom: 5px;
+cursor: pointer;
 }
 .plusCircle{
 cursor: pointer;
@@ -69,6 +71,7 @@ border: none;
 outline: none;
 border-radius: 4px;
 color: #fff;
+cursor: pointer;
 }
 
 .errors{

@@ -21,9 +21,17 @@ const BasicForm = () => {
     initialValues: initialValues,
     validationSchema: signUpSchema,
     onSubmit: (values) => {
-      console.log("values===", values);
+      console.log(values);
     },
   });
+
+  const disableHandler = (e) => {
+    if (e.target.value === "Scontainers") {
+      setDisable(true);
+    } else {
+      setDisable(false);
+    }
+  };
 
   return (
     <div className="formContainer">
@@ -69,13 +77,7 @@ const BasicForm = () => {
               name="pattern"
               onChange={handleChange}
               value={values.pattern}
-              onClick={(e) => {
-                if (e.target.value === "Scontainers") {
-                  setDisable(true);
-                } else {
-                  setDisable(false);
-                }
-              }}
+              onClick={disableHandler}
               className="formSelect"
             >
               {["", "Epics", "Scontainers"].map((item, index) => (
@@ -89,7 +91,9 @@ const BasicForm = () => {
             <DropDownMenu
               disable={disable}
               label="Epics ID(s)"
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange();
+              }}
               value={values.epics}
               name="epics"
               items={["please add the Epics ID(s)"]}
@@ -98,7 +102,9 @@ const BasicForm = () => {
           <div className="formGroup">
             <DropDownMenu
               disable={disable}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange();
+              }}
               value={values.capability}
               name="capability"
               label="Add Capabilites"
@@ -108,7 +114,9 @@ const BasicForm = () => {
           <div className="formGroup">
             <DropDownMenu
               disable={disable}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange();
+              }}
               value={values.platform}
               name="platform"
               label="Add Platform(s)"
@@ -117,9 +125,10 @@ const BasicForm = () => {
           </div>
           <div className="formGroup">
             <DropDownMenu
-              disable={disable}
               name="scontainer"
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange();
+              }}
               value={values.scontainer}
               label="Add S-container(s)"
               items={["please add the S-container(s)"]}

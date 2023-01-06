@@ -10,6 +10,12 @@ const DropDownMenu = (props) => {
     e.preventDefault();
     setIsOpen(true);
   };
+
+  const onHandleChange = (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+  };
+
   return (
     <>
       <label htmlFor="formSelect" className="formLabel">
@@ -20,7 +26,7 @@ const DropDownMenu = (props) => {
         disabled={props.disable}
         name={props.name}
         className="formSelect"
-        onChange={props.onChange}
+        onChange={onHandleChange}
         value={props.value}
       >
         {allItems.map((item, index) => (
