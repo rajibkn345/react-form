@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import ReactDOM from "react-dom";
 import "./Modal.css";
 import { RiCloseLine } from "react-icons/ri";
 
@@ -18,7 +19,7 @@ const Modal = (props) => {
     props.onSave(id, value);
   };
 
-  return (
+  return ReactDOM.createPortal(
     <>
       <div className="darkBG" onClick={() => props.setIsOpen(false)} />
       <div className="centered">
@@ -41,7 +42,8 @@ const Modal = (props) => {
           </div>
         </div>
       </div>
-    </>
+    </>,
+    document.getElementById("portal")
   );
 };
 

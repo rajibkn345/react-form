@@ -24,12 +24,22 @@ const BasicForm = () => {
   const [disable, setDisable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [id, setId] = useState("");
+  const [modalHeading, setModalHeading] = useState("");
 
   const openModal = (e) => {
     e.preventDefault();
     setIsOpen(true);
     let parentDiv = e.target.parentNode;
     setId(parentDiv.id);
+    if (parentDiv.id === "epicsId") {
+      setModalHeading("Epics ID(s)");
+    } else if (parentDiv.id === "plafromId") {
+      setModalHeading("Add Platform(s)");
+    } else if (parentDiv.id === "capabilityId") {
+      setModalHeading("Add Capabilites");
+    } else if (parentDiv.id === "scontainerId") {
+      setModalHeading("Add S-container(s)");
+    }
   };
 
   const { values, errors, handleChange, handleSubmit } = useFormik({
@@ -70,7 +80,7 @@ const BasicForm = () => {
         {isOpen ? (
           <Modal
             id={id}
-            heading={"Add an option"}
+            heading={modalHeading}
             onSave={saveHandler}
             setIsOpen={setIsOpen}
           />
